@@ -1,0 +1,154 @@
+Query 1.
+The task is to calculate the average temperature recorded for each device in the dataset.
+
+SELECT device_id,avg(temperature) as Average_temperature
+FROM cleaned_environment
+group by device_id
+
+Query2.
+This task involves identifying the devices with the highest average carbon monoxide levels and retrieving the top 5 devices based on this metric.
+
+SELECT device_id, avg(carbon_monoxide) as Average_CO
+from cleaned_environment
+group by device_id
+order by Average_CO DESC
+limit 5
+
+Query 3
+The objective is to Determine the average temperature recorded in the cleaned_environment dataset.
+
+SELECT avg(temperature) as Average_Temperature
+from cleaned_environment
+
+Query 4
+This task requires identifying the highest recorded temperature for each device and retrieving the corresponding timestamp and temperature values.
+
+SELECT device_id, max(temperature) as Max_temp, timestamp 
+FROM cleaned_environment
+GROUP by device_id
+
+
+Q 5 -The goal is to Identify devices where the temperature has increased from the minimum recorded temperature to the maximum recorded temperature
+
+
+select device_id
+from cleaned_environment
+group by device_id
+order by temperature
+
+Q 6 -Calculate the exponential moving average (EMA) of the temperature for each device. Retrieve the device ID, timestamp, temperature, and the EMA temperature for the first 10 devices from the 'cleaned_environment' table. The EMA temperature is calculated by partitioning the data based on the device ID, ordering it by the timestamp, and considering all preceding rows up to the current row
+
+
+SELECT device_id, timestamp, temperature,
+       AVG(temperature) OVER (PARTITION BY device_id ORDER BY timestamp ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS ema_temperature
+FROM cleaned_environment
+limit 10
+
+Q 7 -The objective is to identify the timestamps and devices where the carbon monoxide level exceeds the average carbon monoxide level across all devices.
+
+SELECT timestamp,device_id
+FROM cleaned_environment
+where carbon_monoxide> (select AVG(carbon_monoxide) FROM cleaned_environment)
+
+Q 8 - The objective is to identify the devices that have recorded the highest average temperature among all the devices in the dataset.
+
+SELECT device_id, AVG(temperature) as Average_temp
+FROM cleaned_environment
+GROUP by device_id
+ORDER by Average_temp DESC
+
+
+Q9 - The goal is to calculate the average temperature for each hour of the day, considering data from all devices.
+
+SELECT HOUR(timestamp) as hour_of_day ,AVG(temperature)
+FROM cleaned_environment
+
+
+Q 10 -The objective is to identify device(s) in the cleaned environment dataset have recorded only a single distinct temperature value.
+
+SELECT device_id 
+ from cleaned_environment
+ HAVING COUNT(DISTINCT(temperature))=1
+ 
+
+Q 11 - The objective is to identify the devices that have recorded the highest humidity levels.
+
+SELECT device_id, max(humidity)
+FROM cleaned_environment
+group by device_id
+ORDER by humidity DESC
+
+
+Q 12 - This task requires calculating the average temperature for each device while excluding outliers, which are temperatures beyond 3 standard deviations from the mean.
+
+SELECT device_id, AVG(temperature) AS average_temperature
+FROM cleaned_environment
+WHERE temperature between (
+    SELECT AVG(temperature) - (3 * STDDEV(temperature))
+    FROM cleaned_environment
+) and 
+(
+    SELECT AVG(temperature) + (3 * STDDEV(temperature))
+    FROM cleaned_environment
+)
+
+GROUP BY device_id;
+
+Q 13-The goal is to identify devices that have undergone a sudden change in humidity, where the difference is greater than 50%, within a 30-minute time window.
+
+SELECT table1.device_id, table1.timestamp, table1.humidity
+FROM
+(SELECT device_id, timestamp,
+humidity,
+#LAG(humidity,1) OVER (PARTITION BY device_id ORDER BY timestamp),
+(humidity - (LAG(humidity,1) OVER (PARTITION BY device_id ORDER BY timestamp))) diff,
+ABS((humidity - (LAG(humidity,1) OVER ( PARTITION BY device_id ORDER BY timestamp)))*100) c1
+FROM `cleaned_environment`) table1
+WHERE table1.c1 > 50 
+#and table1.diff <=30;
+
+Q 14 - This task involves calculating the average temperature for each device separately for weekdays and weekends.
+
+select device_id,
+case 
+	when dayofweek(timestamp) in (2,3,4,5,6) THEN "Weekday"
+	else "Weekend"
+end,
+avg(temperature) as Weekday_Temp
+FROM cleaned_environment
+GROUP by device_id
+
+
+Q 15 - Calculate the cumulative sum of temperature for each device, ordered by timestamp limit to 10.
+The objective is to calculate the cumulative sum of temperature for each device, considering the records ordered by timestamp limit to 10
+Hint:
+To calculate the cumulative temperature for each device in the "cleaned_environment" dataset, you'll need to use the SUM function with the OVER clause. Remember to partition the SUM function by the device_id column to perform the calculation separately for each device. Also, ensure that the temperatures are ordered by the timestamp column. Finally, assign the calculated cumulative temperature to a new column named "cumulative_temperature." Don't forget to limit the results to the first 10 records using the LIMIT clause. This will allow you to observe the device_id, timestamp, temperature, and cumulative_temperature values for each device. Good luck!
+
+SELECT device_id, timestamp, temperature, 
+       SUM(temperature) OVER (PARTITION BY device_id ORDER BY timestamp) AS cumulative_temperature
+FROM cleaned_environment
+LIMIT 10;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
