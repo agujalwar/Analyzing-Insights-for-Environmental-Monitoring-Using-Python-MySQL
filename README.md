@@ -1,3 +1,7 @@
+
+<img src="https://github.com/agujalwar/Analyzing-Insights-for-Environmental-Monitoring-Using-Python-MySQL/assets/125154280/e65bc56d-c5f2-4f28-9db4-1cfcdf6b7c85" width="600" height="400">
+
+
 ## Analyzing-Insights-for-Environmental-Monitoring-Using-Python-MySQL
 This project analyzes a real-world database for Environmental monitoring data (such as timestamp,carbon_monoxide, humidity, light,liquefied_petroleum_gas, motion, smoke, and temperature) for corresponding devices. 
 In this project, I have implemented my Data analysis skills to pre-process the data using Python for improved performance, and to use a structured query language MySQL to retrieve useful information from the database.
