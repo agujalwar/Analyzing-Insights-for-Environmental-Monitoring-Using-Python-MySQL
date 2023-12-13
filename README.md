@@ -3,8 +3,10 @@
 
 
 ## Analyzing-Insights-for-Environmental-Monitoring-Using-Python-MySQL
-This project analyzes a real-world database for Environmental monitoring data (such as timestamp,carbon_monoxide, humidity, light,liquefied_petroleum_gas, motion, smoke, and temperature) for corresponding devices. 
-In this project, I have implemented my Data analysis skills to pre-process the data using Python for improved performance, and to use a structured query language MySQL to retrieve useful information from the database.
+* Conducted in-depth analysis on a real-world Environmental Monitoring database, scrutinizing diverse data including timestamp, carbon monoxide, humidity,light, liquefied petroleum gas, motion, smoke, and temperature for corresponding devices.
+* Utilized Python pandas library for robust data preprocessing, effectively handling duplicate records, null values, and implementing necessary data type changes to ensure data integrity.
+* Applied MySQL for extracting valuable insights from the database, including the identification of the highest recorded temperature for each device and calculating the exponential moving average (EMA) of temperature.
+* Implemented data-driven analysis techniques to identify devices experiencing sudden changes in humidity, showcasing a keen ability to draw meaningful conclusions from complex datasets.
 ### Module 1: Data preprocessing
   1.Reading the Data from CSV
   2.Renaming the columns
